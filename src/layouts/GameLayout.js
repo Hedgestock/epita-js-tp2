@@ -13,12 +13,15 @@ const gameLayoutStyle = {
 };
 
 class GameLayout extends React.Component {
+
+  players = ["player 1","player 2"];
+
   constructor(props) {
     super(props);
 
     this.state = {
       cells: Array(9).fill(null),
-      currentPlayer: "player 1"
+      currentPlayer: 0,
     };
   }
 
@@ -29,12 +32,13 @@ class GameLayout extends React.Component {
   }
 
   render() {
+    const { currentPlayer } = this.state;
     return (
       <div
         style={gameLayoutStyle}
-        onClick={() => this.setState({ currentPlayer: "toto" })}
+        onClick={() => this.setState({ currentPlayer: currentPlayer ? 0 : 1})}
       >
-        <GameInfo />
+        <GameInfo currentPlayer={this.players[currentPlayer]}/>
         <Board />
       </div>
     );
