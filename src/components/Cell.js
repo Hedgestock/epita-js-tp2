@@ -1,4 +1,7 @@
 import React from "react";
+import cross from '../../public/cross.png';
+import circle from '../../public/circle.png';
+
 
 const cellStyle = {
   display: "block",
@@ -9,7 +12,8 @@ const cellStyle = {
   outline: "none",
   textAlign: "center",
   lineHeight: "200px",
-  cursor: "pointer"
+  cursor: "pointer",
+  backgroundSize: "contain"
 };
 
 class Cell extends React.Component {
@@ -28,15 +32,26 @@ class Cell extends React.Component {
   
   onMouseOverHandler() {
     this.setState({backgroundColor: "grey"});
+
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.content === 0) {
+      state = { backgroundImage: "url(" + cross + ")" };
+    } else if (props.content === 1) {
+      state = { backgroundImage: "url(" + circle + ")" };
+    }
+    else {
+      state = { backgroundImage: "" };
+    }
+    return state;
+  }
   render() {
-    const { content, onClickHandler } = this.props;
+    const onClickHandler = this.props.onClickHandler;
     return <div style={this.state}
                 onMouseOut={this.onMouseOutHandler}
                 onMouseOver={this.onMouseOverHandler}
                 onClick={onClickHandler}>
-                {content}
             </div>;
   }
 }

@@ -1,3 +1,7 @@
+This TP has been completed by Arthur PAMART (pamart_a).
+Tahnk you for letting me go early this weekend and spend time withmy family.
+
+
 # TP1 - Tic Tac Toe
 
 In this workshop you will build a Tic Tac Toe game using React.
