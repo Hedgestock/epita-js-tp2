@@ -73,6 +73,7 @@ class GameLayout extends React.Component {
           } else {
             alert("AND THE WINNER IS... " + this.state.players[winner] + "!!!");
           }
+          this.clearBoard();
         }
       }
       setTimeout(winnerAlert, 100); // Even in componentDidUpdate the actual rendering is not yet done. Don't understand why.
