@@ -26,8 +26,8 @@ class GameLayout extends React.Component {
 
     this.state = {
       cells: Array(9).fill(null),
+      gameState: "playing",
       currentPlayer: 0,
-      winner: null,
       players: ["player 1","player 2"],
     };
   }
@@ -47,8 +47,8 @@ class GameLayout extends React.Component {
 
   onClickHandler(index) {
     return () => {
-      const { cells : tempCells, currentPlayer } = this.state;
-      if (tempCells[index] === null) {
+      const { cells : tempCells, currentPlayer, gameState } = this.state;
+      if ((gameState === "playing") && (tempCells[index] === null)) {
         tempCells[index] = currentPlayer;
         this.setState({
           cells: tempCells,
@@ -60,30 +60,23 @@ class GameLayout extends React.Component {
     // getDerivedStateFromProps is called before every render,
     // use it to infer new state values from props or state changes.
     static getDerivedStateFromProps(props, state) {
-      state.winner = checkWinner(state.cells, 3);
+      const winner = checkWinner(state.cells, 3);
+      if (winner === -1) {
+        state.gameState = "draw";
+      } else if (winner !== null) {
+        state.gameState = "over";
+        state.currentPlayer = winner;
+      } 
+      
       return state;
     }
     
-    componentDidUpdate() {
-      const winnerAlert = () => {
-        const winner = this.state.winner
-        if (winner !== null) {
-          if (winner === -1) {
-            alert("Draw.");
-          } else {
-            alert("AND THE WINNER IS... " + this.state.players[winner] + "!!!");
-          }
-          this.clearBoard();
-        }
-      }
-      setTimeout(winnerAlert, 100); // Even in componentDidUpdate the actual rendering is not yet done. Don't understand why.
-    }
-    
+   
     render() {
-    const { cells, currentPlayer, players } = this.state;
+    const { cells, currentPlayer, players, gameState } = this.state;
     return (
       <div style={gameLayoutStyle}>
-        <GameInfo currentPlayer={players[currentPlayer]}/>
+        <GameInfo currentPlayer={players[currentPlayer]} gameState={gameState}/>
         <input name={0} type="text" value={players[0]} onChange={this.inputHandler}/>
         <input name={1} type="text" value={players[1]} onChange={this.inputHandler}/> {/* The name could be cleaner but it does the job for now */ }
         <Board cells={cells} cellClickHandler={this.onClickHandler}/>
