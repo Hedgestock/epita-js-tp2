@@ -1,6 +1,5 @@
 import React from "react";
 
-// FIXME: change message and color based on `gameState`'s value
 const GameInfo = ({ gameState = "stale", currentPlayer = "unkown" }) => (
   gameState === "playing" ?
   <h3>It's your turn {currentPlayer}</h3>

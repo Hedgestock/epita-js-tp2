@@ -6,8 +6,8 @@ import circle from '../../public/circle.png';
 const cellStyle = {
   display: "block",
   backgroundColor: "white",
-  width: "200px",
-  height: "200px",
+  width: "100%",
+  height: "100%",
   border: "1px solid #333",
   outline: "none",
   textAlign: "center",
@@ -32,7 +32,6 @@ class Cell extends React.Component {
   
   onMouseOverHandler() {
     this.setState({backgroundColor: "grey"});
-
   }
 
   static getDerivedStateFromProps(props, state) {
