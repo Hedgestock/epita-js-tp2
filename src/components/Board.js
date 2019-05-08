@@ -9,8 +9,8 @@ const boardStyle = {
   gridAutoRows: "auto",
 };
 
-const Board = ({ cells = [], cellClickHandler : onClickHandler = () => console.error("no cellClickHandler specified") }) => (
-  <div style={boardStyle}>{cells.map((c, i) => <Cell key={i} content={c} onClickHandler={onClickHandler(i)}/>)}</div>
+const Board = ({ cells = [], cellClickHandler : onClickHandler = () => console.error("no cellClickHandler specified"), isAllowed = null}) => (
+  <div style={boardStyle}>{cells.map((c, i) => <Cell key={i} content={c} onClickHandler={onClickHandler(i)} isAllowed={isAllowed}/>)}</div>
 );
 
 export default Board;

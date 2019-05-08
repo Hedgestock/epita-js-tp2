@@ -29,6 +29,7 @@ class GameLayout extends React.Component {
     this.state = {
       cells: Array(9).fill(null),
       metaCells: Array(9).fill().map(() => ({winner: null, cells: Array(9).fill(null)})),//Avoid shallow copy
+      allowedMetaCells:  Array(9).fill().map((_, i) => i),
       gameState: "playing",
       currentPlayer: 0,
       players: ["player 1","player 2"],
@@ -41,6 +42,7 @@ class GameLayout extends React.Component {
     this.setState({
       cells: Array(9).fill(null),
       metaCells: Array(9).fill().map(() => ({winner: null, cells: Array(9).fill(null)})),
+      allowedMetaCells:  Array(9).fill().map((_, i) => i),
       currentPlayer: 0,
       gameState: "playing",
     });
@@ -70,13 +72,14 @@ class GameLayout extends React.Component {
         let tempCells = this.state.metaCells[metaIndex].cells;
         return () => {
           const { currentPlayer, gameState } = this.state;
-          if ((gameState === "playing") && (tempCells[index] === null)) {
+          if ((gameState === "playing") && this.state.allowedMetaCells.includes(metaIndex) && (tempCells[index] === null)) {
             tempCells[index] = currentPlayer;
             tempMetaCells[metaIndex].cells = tempCells;
             this.setState({
               metaCells: tempMetaCells,
               currentPlayer: currentPlayer ? 0 : 1,
-              lastMetaCellUpdated: metaIndex});
+              lastMetaCellUpdated: metaIndex,
+              allowedMetaCells: [index]});
             }
           };
       }
@@ -92,20 +95,25 @@ class GameLayout extends React.Component {
       } else {
         state.metaCells[state.lastMetaCellUpdated].winner = checkWinner(state.metaCells[state.lastMetaCellUpdated].cells, 3)
         winner = checkWinner(state.metaCells.map(mc => mc.winner), 3);
-
       }
       if (winner === -1) {
         state.gameState = "draw";
       } else if (winner !== null) {
         state.gameState = "over";
         state.currentPlayer = winner;
-      } 
+      }
+      if (winner === null && state.metaCells[state.allowedMetaCells[0]].winner !== null) {
+        state.allowedMetaCells = state.metaCells.map((mc, i) => (mc.winner === null ? i : null)).filter(e => e !== null);
+        // Need to check that here in case of winning move in a metaCell, also reduce might give an optimization, uncertain.
+      } else if (winner !== null) {
+        state.allowedMetaCells = [];
+      }
       return state;
     }
     
    
     render() {
-    const { cells, currentPlayer, players, gameState, metaCells, mode } = this.state;
+    const { allowedMetaCells, cells, currentPlayer, players, gameState, metaCells, mode } = this.state;
     return (
       <div style={gameLayoutStyle}>
         <GameInfo currentPlayer={players[currentPlayer]} gameState={gameState}/>
@@ -115,7 +123,7 @@ class GameLayout extends React.Component {
           <div style={{height: "600px", width: "600px"}}>
             <Board cells={cells} cellClickHandler={this.cellClickHandler}/>
           </div>
-        : <MetaBoard cells={metaCells} metaCellClickHandler={this.metaCellClickHandler}/>
+        : <MetaBoard cells={metaCells} metaCellClickHandler={this.metaCellClickHandler} allowedMetaCells={allowedMetaCells}/>
         }
         <button onClick={this.clearBoard}>Clear Board</button>
         <button onClick={() => {this.clearBoard(); this.setState({mode: mode === "classic" ? "strategic" : "classic"})}}>

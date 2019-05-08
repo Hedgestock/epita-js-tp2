@@ -9,8 +9,8 @@ const metaBoardStyle = {
   gridAutoRows: "auto"
 };
 
-const MetaBoard = ({ cells = [], metaCellClickHandler = () => console.error("no metaCellClickHandler specified") }) => (
-  <div style={metaBoardStyle}>{cells.map((c, i) => <Board key={i} cells={c.cells} cellClickHandler={metaCellClickHandler(i)}/>)}</div>
+const MetaBoard = ({ cells = [], metaCellClickHandler = () => console.error("no metaCellClickHandler specified"), allowedMetaCells = Array(9).fill().map((_, i) => i) }) => (
+  <div style={metaBoardStyle}>{cells.map((c, i) => <Board key={i} cells={c.cells} cellClickHandler={metaCellClickHandler(i)} isAllowed={allowedMetaCells.includes(i)} />)}</div>
 );
 
 export default MetaBoard;

@@ -35,18 +35,24 @@ class Cell extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    let backgroundImage = "";
+    let backgroundColor = "red";
     if (props.content === 0) {
-      state = { backgroundImage: "url(" + cross + ")" };
+      backgroundImage = "url(" + cross + ")";
     } else if (props.content === 1) {
-      state = { backgroundImage: "url(" + circle + ")" };
+      backgroundImage = "url(" + circle + ")";
     }
-    else {
-      state = { backgroundImage: "" };
+    if (props.isAllowed) {
+      backgroundColor = "green";
+    } else if (props.isAllowed === null) {
+      backgroundColor = state.backgroundColor; // Kind of unsatisfying...
     }
-    return state;
+
+    return {backgroundColor, backgroundImage};
   }
+
   render() {
-    const onClickHandler = this.props.onClickHandler;
+    const { onClickHandler } = this.props;
     return <div style={this.state}
                 onMouseOut={this.onMouseOutHandler}
                 onMouseOver={this.onMouseOverHandler}
