@@ -33,6 +33,7 @@ class GameLayout extends React.Component {
       currentPlayer: 0,
       players: ["player 1","player 2"],
       mode: "classic",
+      lastMetaCellUpdated: 0,
     };
   }
   
@@ -74,7 +75,8 @@ class GameLayout extends React.Component {
             tempMetaCells[metaIndex].cells = tempCells;
             this.setState({
               metaCells: tempMetaCells,
-              currentPlayer: currentPlayer ? 0 : 1});
+              currentPlayer: currentPlayer ? 0 : 1,
+              lastMetaCellUpdated: metaIndex});
             }
           };
       }
@@ -88,7 +90,7 @@ class GameLayout extends React.Component {
       {
         winner = checkWinner(state.cells, 3);
       } else {
-
+        state.metaCells[state.lastMetaCellUpdated].winner = checkWinner(state.metaCells[state.lastMetaCellUpdated].cells, 3)
         winner = checkWinner(state.metaCells.map(mc => mc.winner), 3);
 
       }
