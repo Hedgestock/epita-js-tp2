@@ -59,3 +59,15 @@ export function nextPlayer(currentPlayer, playersCount = 2){
     }
     return currentPlayer;
 }
+
+function generateRandomMoveSimple (board) {
+    let allowedMoves = board.map((c, i) => (c === null ? i : null)).filter(e => e !== null)
+    return allowedMoves[Math.floor(Math.random()*allowedMoves.length)]; // There may be a simpler solution
+}
+
+export function generateRandomMove(board, allowedCells = [], isStrategic = false){
+    if (isStrategic) {
+        return generateRandomMoveSimple(board[allowedCells[Math.floor(Math.random()*allowedCells.length)]]);
+    }
+    return generateRandomMoveSimple(board);
+}

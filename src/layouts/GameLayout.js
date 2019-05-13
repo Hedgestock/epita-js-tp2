@@ -80,9 +80,10 @@ class GameLayout extends React.Component {
               metaCells: tempMetaCells,
               currentPlayer: nextPlayer(currentPlayer, playersCount),
               lastMetaCellUpdated: metaIndex,
-              allowedMetaCells: [index]});
-            }
-          };
+              allowedMetaCells: [index],
+            });
+          }
+        };
       }
     }
         
@@ -118,7 +119,7 @@ class GameLayout extends React.Component {
     return (
       <div style={gameLayoutStyle}>
         <GameInfo currentPlayer={players[currentPlayer]} gameState={gameState}/>
-        {Array(playersCount).fill().map((_, i) => <input name={i} type="text" value={players[i]} onChange={this.inputHandler}/>) 
+        {Array(playersCount).fill().map((_, i) => <input key={i} name={i} type="text" value={players[i]} onChange={this.inputHandler}/>) 
         /* The name could be cleaner but it does the job for now */ }
         {mode === "classic" ? 
           <div style={{height: "600px", width: "600px"}}>
@@ -130,7 +131,6 @@ class GameLayout extends React.Component {
           <button onClick={() => {this.clearBoard(); this.setState({playersCount: 2})}}>2 players</button>
           <button onClick={() => {this.clearBoard(); this.setState({playersCount: 3})}}>3 players</button>
           <button onClick={() => {this.clearBoard(); this.setState({playersCount: 4})}}>4 players</button>
-
         </div>
         }
         <button onClick={this.clearBoard}>Clear Board</button>
