@@ -51,3 +51,11 @@ export function checkWinner(cells, size) {
     
     return winner;
 }
+
+export function nextPlayer(currentPlayer, playersCount = 2){
+    currentPlayer++;
+    if (currentPlayer === playersCount) {
+        currentPlayer = 0;
+    }
+    return currentPlayer;
+}

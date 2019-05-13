@@ -1,6 +1,8 @@
 import React from "react";
 import cross from '../../public/cross.png';
 import circle from '../../public/circle.png';
+import cross2 from '../../public/cross2.png';
+import circle2 from '../../public/circle2.png';
 
 
 const cellStyle = {
@@ -41,6 +43,10 @@ class Cell extends React.Component {
       backgroundImage = "url(" + cross + ")";
     } else if (props.content === 1) {
       backgroundImage = "url(" + circle + ")";
+    } else if (props.content === 2) {
+      backgroundImage = "url(" + cross2 + ")";
+    } else if (props.content === 3) {
+      backgroundImage = "url(" + circle2 + ")";
     }
     if (props.isAllowed) {
       backgroundColor = "green";

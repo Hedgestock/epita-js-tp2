@@ -3,7 +3,7 @@ import Board from "../components/Board";
 import MetaBoard from "../components/MetaBoard";
 import GameInfo from "../components/GameInfo";
 
-import { checkWinner } from "../helpers/helpers";
+import { checkWinner, nextPlayer } from "../helpers/helpers";
 
 const gameLayoutStyle = {
   width: 650,
@@ -32,7 +32,8 @@ class GameLayout extends React.Component {
       allowedMetaCells:  Array(9).fill().map((_, i) => i),
       gameState: "playing",
       currentPlayer: 0,
-      players: ["player 1","player 2"],
+      players: ["player 1","player 2","player 3","player 4"],
+      playersCount: 2,
       mode: "classic",
       lastMetaCellUpdated: 0,
     };
@@ -56,12 +57,12 @@ class GameLayout extends React.Component {
 
   cellClickHandler(index) {
     return () => {
-      const { cells : tempCells, currentPlayer, gameState } = this.state;
+      const { cells : tempCells, currentPlayer, gameState, playersCount } = this.state;
       if ((gameState === "playing") && (tempCells[index] === null)) {
         tempCells[index] = currentPlayer;
         this.setState({
           cells: tempCells,
-          currentPlayer: currentPlayer ? 0 : 1});
+          currentPlayer: nextPlayer(currentPlayer, playersCount)});
         }
       };
     }
@@ -71,13 +72,13 @@ class GameLayout extends React.Component {
         let tempMetaCells = this.state.metaCells;
         let tempCells = this.state.metaCells[metaIndex].cells;
         return () => {
-          const { currentPlayer, gameState } = this.state;
+          const { currentPlayer, gameState, playersCount } = this.state;
           if ((gameState === "playing") && this.state.allowedMetaCells.includes(metaIndex) && (tempCells[index] === null)) {
             tempCells[index] = currentPlayer;
             tempMetaCells[metaIndex].cells = tempCells;
             this.setState({
               metaCells: tempMetaCells,
-              currentPlayer: currentPlayer ? 0 : 1,
+              currentPlayer: nextPlayer(currentPlayer, playersCount),
               lastMetaCellUpdated: metaIndex,
               allowedMetaCells: [index]});
             }
@@ -123,10 +124,17 @@ class GameLayout extends React.Component {
           <div style={{height: "600px", width: "600px"}}>
             <Board cells={cells} cellClickHandler={this.cellClickHandler}/>
           </div>
-        : <MetaBoard cells={metaCells} metaCellClickHandler={this.metaCellClickHandler} allowedMetaCells={allowedMetaCells}/>
+        : 
+        <div>
+          <MetaBoard cells={metaCells} metaCellClickHandler={this.metaCellClickHandler} allowedMetaCells={allowedMetaCells}/>
+          <button onClick={() => {this.clearBoard(); this.setState({playersCount: 2})}}>2 players</button>
+          <button onClick={() => {this.clearBoard(); this.setState({playersCount: 3})}}>3 players</button>
+          <button onClick={() => {this.clearBoard(); this.setState({playersCount: 4})}}>4 players</button>
+
+        </div>
         }
         <button onClick={this.clearBoard}>Clear Board</button>
-        <button onClick={() => {this.clearBoard(); this.setState({mode: mode === "classic" ? "strategic" : "classic"})}}>
+        <button onClick={() => {this.clearBoard(); this.setState({mode: mode === "classic" ? "strategic" : "classic", playersCount: 2})}}>
           Play {mode === "classic" ? "strategic" : "classic"}
         </button>
 
