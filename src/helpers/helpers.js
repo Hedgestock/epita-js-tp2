@@ -7,7 +7,7 @@ export function checkWinner(cells, size) {
         for (let j = 1; (j < size) && wins; j++) {
             wins = cells[size * i + j] === winner;
         }
-        if (!wins) {
+        if (!wins || winner === -1) {
             winner = null;
         }
     } // Rows
@@ -18,7 +18,7 @@ export function checkWinner(cells, size) {
         for (let j = 1; (j < size) && wins; j++) {
             wins = cells[i + size * j] === winner;
         }
-        if (!wins) {
+        if (!wins || winner === -1) {
             winner = null;
         }
     } // Columns
@@ -29,7 +29,7 @@ export function checkWinner(cells, size) {
         for (let i = 1; (i < size) && wins ; i++) {
             wins = cells[size * i + i] === winner;
         }
-        if (!wins) {
+        if (!wins || winner === -1) {
             winner = null;
         }
     } // Top left to bottom right
@@ -40,7 +40,7 @@ export function checkWinner(cells, size) {
         for (let i = 0; (i < size - 1) && wins ; i++) {
             wins = cells[(size * (size - (1 + i))) + i] === winner;
         }
-        if (!wins) {
+        if (!wins || winner === -1) {
             winner = null;
         }
     } // Top right to bottom left
