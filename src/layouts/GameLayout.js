@@ -114,12 +114,12 @@ class GameLayout extends React.Component {
     
    
     render() {
-    const { allowedMetaCells, cells, currentPlayer, players, gameState, metaCells, mode } = this.state;
+    const { allowedMetaCells, cells, currentPlayer, players, gameState, metaCells, mode, playersCount } = this.state;
     return (
       <div style={gameLayoutStyle}>
         <GameInfo currentPlayer={players[currentPlayer]} gameState={gameState}/>
-        <input name={0} type="text" value={players[0]} onChange={this.inputHandler}/>
-        <input name={1} type="text" value={players[1]} onChange={this.inputHandler}/> {/* The name could be cleaner but it does the job for now */ }
+        {Array(playersCount).fill().map((_, i) => <input name={i} type="text" value={players[i]} onChange={this.inputHandler}/>) 
+        /* The name could be cleaner but it does the job for now */ }
         {mode === "classic" ? 
           <div style={{height: "600px", width: "600px"}}>
             <Board cells={cells} cellClickHandler={this.cellClickHandler}/>
