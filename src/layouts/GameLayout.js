@@ -96,6 +96,9 @@ class GameLayout extends React.Component {
         winner = checkWinner(state.cells, 3);
       } else {
         state.metaCells[state.lastMetaCellUpdated].winner = checkWinner(state.metaCells[state.lastMetaCellUpdated].cells, 3)
+        if (state.metaCells[state.lastMetaCellUpdated].winner !== -1 && state.metaCells[state.lastMetaCellUpdated].winner !== null) {
+          state.metaCells[state.lastMetaCellUpdated].cells = Array(9).fill(state.metaCells[state.lastMetaCellUpdated].winner);
+        }
         winner = checkWinner(state.metaCells.map(mc => mc.winner), 3);
       }
       if (winner === -1) {
